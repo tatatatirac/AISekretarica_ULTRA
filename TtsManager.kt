@@ -1,10 +1,19 @@
-package com.aisecretary.app.voice
-import android.content.Context
-import android.speech.tts.TextToSpeech
-import java.util.Locale
+class TtsManager {
+    private lateinit var tts: TextToSpeech
 
-class TtsManager(context: Context) {
-    private val tts: TextToSpeech = TextToSpeech(context) { if (it==TextToSpeech.SUCCESS) tts.language = Locale("sr","RS") }
-    fun speak(t:String){ tts.speak(t, TextToSpeech.QUEUE_FLUSH, null, null) }
-    fun shutdown(){ tts.shutdown() }
+    init {
+        tts = TextToSpeech(context) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                // Initialization success
+            } else {
+                // Initialization failed
+            }
+        }
+    }
+
+    fun speak(text: String) {
+        if (this::tts.isInitialized) {
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+        }
+    }
 }
